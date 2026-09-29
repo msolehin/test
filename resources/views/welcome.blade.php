@@ -114,6 +114,9 @@
                                 Deploy now
                             </a>
                         </li>
+                        <li>
+                            <a href="{{ route('about') }}" class="inline-block px-5 py-1.5 dark:text-[#EDEDEC] border-[#19140035] hover:border-[#1915014a] border text-[#1b1b18] dark:border-[#3E3E3A] dark:hover:border-[#62605b] rounded-sm text-sm leading-normal">About</a>
+                        </li>
                     </ul>
 
                     <p class="mt-6 lg:mt-10 text-[#706f6c] dark:text-[#A1A09A]">

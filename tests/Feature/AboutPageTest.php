@@ -15,4 +15,9 @@ class AboutPageTest extends TestCase
     {
         $this->assertSame(url('/about'), route('about'));
     }
+
+    public function test_homepage_links_to_about_page(): void
+    {
+        $this->get('/')->assertOk()->assertSee('href="'.route('about').'"', false)->assertSee('About');
+    }
 }
