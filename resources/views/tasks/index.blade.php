@@ -8,7 +8,9 @@
         body { font-family: system-ui, sans-serif; max-width: 40rem; margin: 2rem auto; padding: 0 1rem; }
         ul { list-style: none; padding: 0; }
         .task { display: flex; align-items: center; gap: .5rem; padding: .5rem 0; border-bottom: 1px solid #e5e7eb; }
-        .task--done { color: #9ca3af; text-decoration: line-through; }
+        .task--done { color: #9ca3af; }
+        .task--done input, .task--done button { color: #9ca3af; }
+        .task--done input[type="text"] { text-decoration: line-through; background: #f9fafb; border-color: #e5e7eb; }
         .error { color: #b91c1c; }
     </style>
 </head>
