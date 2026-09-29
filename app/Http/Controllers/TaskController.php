@@ -24,4 +24,30 @@ class TaskController extends Controller
 
         return redirect()->route('tasks.index');
     }
+
+    public function toggle(Task $task): RedirectResponse
+    {
+        $task->is_done = ! $task->is_done;
+        $task->save();
+
+        return redirect()->route('tasks.index');
+    }
+
+    public function update(Request $request, Task $task): RedirectResponse
+    {
+        $validated = $request->validate([
+            'title' => ['required', 'string', 'max:255'],
+        ]);
+
+        $task->update(['title' => $validated['title']]);
+
+        return redirect()->route('tasks.index');
+    }
+
+    public function destroy(Task $task): RedirectResponse
+    {
+        $task->delete();
+
+        return redirect()->route('tasks.index');
+    }
 }

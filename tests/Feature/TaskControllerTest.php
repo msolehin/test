@@ -48,4 +48,56 @@ class TaskControllerTest extends TestCase
 
         $this->assertDatabaseCount('tasks', 0);
     }
+
+    public function test_toggle_marks_open_task_done(): void
+    {
+        $task = Task::factory()->create(['is_done' => false]);
+
+        $this->patch("/tasks/{$task->id}/toggle")->assertRedirect('/tasks');
+
+        $this->assertTrue($task->fresh()->is_done);
+    }
+
+    public function test_toggle_marks_done_task_undone(): void
+    {
+        $task = Task::factory()->done()->create();
+
+        $this->patch("/tasks/{$task->id}/toggle")->assertRedirect('/tasks');
+
+        $this->assertFalse($task->fresh()->is_done);
+    }
+
+    public function test_update_changes_title(): void
+    {
+        $task = Task::factory()->create(['title' => 'Old title']);
+
+        $this->patch("/tasks/{$task->id}", ['title' => 'New title'])->assertRedirect('/tasks');
+
+        $this->assertSame('New title', $task->fresh()->title);
+    }
+
+    public function test_update_requires_title(): void
+    {
+        $task = Task::factory()->create(['title' => 'Old title']);
+
+        $this->patch("/tasks/{$task->id}", ['title' => ''])->assertSessionHasErrors('title');
+
+        $this->assertSame('Old title', $task->fresh()->title);
+    }
+
+    public function test_destroy_deletes_task(): void
+    {
+        $task = Task::factory()->create();
+
+        $this->delete("/tasks/{$task->id}")->assertRedirect('/tasks');
+
+        $this->assertModelMissing($task);
+    }
+
+    public function test_actions_on_missing_task_return_404(): void
+    {
+        $this->patch('/tasks/999/toggle')->assertNotFound();
+        $this->patch('/tasks/999', ['title' => 'x'])->assertNotFound();
+        $this->delete('/tasks/999')->assertNotFound();
+    }
 }

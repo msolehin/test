@@ -30,8 +30,24 @@
         <ul>
             @foreach ($tasks as $task)
                 <li class="task {{ $task->is_done ? 'task--done' : '' }}">
-                    <span class="task__title">{{ $task->title }}</span>
-                    {{-- Row actions (toggle, edit, delete) are added in the next task. --}}
+                    <form method="POST" action="{{ route('tasks.toggle', $task) }}">
+                        @csrf
+                        @method('PATCH')
+                        <button type="submit">{{ $task->is_done ? 'Undo' : 'Done' }}</button>
+                    </form>
+
+                    <form method="POST" action="{{ route('tasks.update', $task) }}">
+                        @csrf
+                        @method('PATCH')
+                        <input type="text" name="title" value="{{ $task->title }}" required>
+                        <button type="submit">Save</button>
+                    </form>
+
+                    <form method="POST" action="{{ route('tasks.destroy', $task) }}">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" onclick="return confirm('Delete this task?')">Delete</button>
+                    </form>
                 </li>
             @endforeach
         </ul>
